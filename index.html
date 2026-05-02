@@ -512,19 +512,19 @@
 const months = ['Jun-25','Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26'];
 const monthLabels = ['Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26'];
 
-const income = [0, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680];
+const income = [0, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 3419.39, 2680];
 
 // Mortgage repayments by month (from IE sheet; Jun=pre-settlement inspection only; Mar+ estimated)
 const mortgages = [0, 4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45, 4075];
 
 // Fixed other expenses (PM + body corp + insurance + admin + council)
 // Mar-26 (index 9): body corp charged quarterly $802.20 (Q2 Mar-May 2026, per PM Statement #9) instead of monthly $310.46
-// Apr-26 (index 10): council rates Q quarterly $1,068.29 + pest spray one-off $123 (per PM Statement #11); body corp $0 (Q2 already paid March)
-const fixedOther = [550, 975.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 1429.90, 1473.77, 938.16];
+// Apr-26 (index 10): light month — PM Statement #10 shows only PM Fee $276.35 + Admin $8.80 (no council/body corp/pest); income +$3,419.39 incl. 5-week rent run + $69.39 water reimbursement
+const fixedOther = [550, 975.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 1429.90, 337.75, 938.16];
 // Jul includes let fee $737 folded into IE total; Nov includes NBN $300
 
 // Actual total expenses from cashflow sheet
-const expensesActual = [550, 6157.06, 5110.41, 4994.35, 4882.96, 4996.83, 4921.95, 5006.79, 5070.79, 5350.48, 5796.22, null];
+const expensesActual = [550, 6157.06, 5110.41, 4994.35, 4882.96, 4996.83, 4921.95, 5006.79, 5070.79, 5350.48, 4660.20, null];
 const isProjected = [false,false,false,false,false,false,false,false,false,false,false,true];
 
 // Build expenses array (actual where available, estimated otherwise)
