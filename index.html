@@ -228,7 +228,7 @@
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-title">Monthly Cashflow — Income vs Expenses</div>
-      <div class="chart-sub">Jul 2025 – May 2026 &nbsp;·&nbsp; Shaded bars = projected</div>
+      <div class="chart-sub">Jun 2025 – May 2026 &nbsp;·&nbsp; Shaded bars = projected</div>
       <div class="legend">
         <div class="legend-item"><div class="legend-dot" style="background:#e8b84b"></div>Rent Income</div>
         <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Total Expenses</div>
@@ -329,7 +329,7 @@
   <div class="charts-grid-3" style="margin-bottom:20px">
     <div class="summary-box" style="background:var(--card); border-radius:12px; padding:18px">
       <div class="label">Avg Monthly Mortgage</div>
-      <div class="value amount-negative">$4,068</div>
+      <div class="value amount-negative">$4,084</div>
       <div style="font-size:0.75rem; color:var(--text2); margin-top:4px">Loan 1 P+I + Loan 2 IO (variable)</div>
     </div>
     <div class="summary-box" style="background:var(--card); border-radius:12px; padding:18px">
@@ -489,7 +489,7 @@
 
   <div class="chart-card" style="margin-bottom:20px">
     <div class="chart-title">Loan Repayment — Actual vs Recorded</div>
-    <div class="chart-sub">Verified from CommBank offset account statements &nbsp;·&nbsp; Mar 2026: LN REPAY $1,213 + $2,707.58</div>
+    <div class="chart-sub">Verified from CommBank offset account statements &nbsp;·&nbsp; Apr 2026: LN REPAY $1,213.00 + $3,109.45</div>
     <div class="chart-container"><canvas id="loanChart" height="160"></canvas></div>
   </div>
 
@@ -515,16 +515,17 @@ const monthLabels = ['Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 
 const income = [0, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680];
 
 // Mortgage repayments by month (from IE sheet; Jun=pre-settlement inspection only; Mar+ estimated)
-const mortgages = [0, 4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4075, 4075];
+const mortgages = [0, 4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45, 4075];
 
 // Fixed other expenses (PM + body corp + insurance + admin + council)
 // Mar-26 (index 9): body corp charged quarterly $802.20 (Q2 Mar-May 2026, per PM Statement #9) instead of monthly $310.46
-const fixedOther = [550, 975.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 1429.90, 938.16, 938.16];
+// Apr-26 (index 10): council rates Q quarterly $1,068.29 + pest spray one-off $123 (per PM Statement #11); body corp $0 (Q2 already paid March)
+const fixedOther = [550, 975.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 1429.90, 1473.77, 938.16];
 // Jul includes let fee $737 folded into IE total; Nov includes NBN $300
 
 // Actual total expenses from cashflow sheet
-const expensesActual = [550, 6157.06, 5110.41, 4994.35, 4882.96, 4996.83, 4921.95, 5006.79, 5070.79, 5350.48, null, null];
-const isProjected = [false,false,false,false,false,false,false,false,false,false,true,true];
+const expensesActual = [550, 6157.06, 5110.41, 4994.35, 4882.96, 4996.83, 4921.95, 5006.79, 5070.79, 5350.48, 5796.22, null];
+const isProjected = [false,false,false,false,false,false,false,false,false,false,false,true];
 
 // Build expenses array (actual where available, estimated otherwise)
 const expenses = expensesActual.map((v, i) => v !== null ? v : (mortgages[i] + fixedOther[i]));
@@ -535,8 +536,8 @@ let cumulative = [];
 let running = 0;
 netCashflow.forEach(v => { running += v; cumulative.push(Math.round(running)); });
 
-// Totals (actual only = months 0-9, i.e. Jun 25 – Mar 26)
-const actualMonths = 10;
+// Totals (actual only = months 0-10, i.e. Jun 25 – Apr 26)
+const actualMonths = 11;
 const totalIncomeActual = income.slice(0, actualMonths).reduce((a,b) => a+b, 0);
 const totalExpensesActual = expenses.slice(0, actualMonths).reduce((a,b) => a+b, 0);
 const totalNetActual = totalIncomeActual - totalExpensesActual;
@@ -605,8 +606,8 @@ function buildCashflowTable() {
 // LOAN TABLE
 // =====================================================================
 function buildLoanTable() {
-  const loanMonths = ['Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26'];
-  const loanVals = [4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58];
+  const loanMonths = ['Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26'];
+  const loanVals = [4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45];
   const tbody = document.getElementById('loan-table-body');
   loanVals.forEach((v, i) => {
     const prev = i>0 ? loanVals[i-1] : null;
@@ -767,9 +768,9 @@ function buildCumulativeChart() {
 
 // Stacked expense chart
 function buildStackedExpenseChart() {
-  const lMonths = monthLabels.slice(1, 10);
-  const mortData = mortgages.slice(1, 10);
-  const otherData = fixedOther.slice(1, 10);
+  const lMonths = monthLabels.slice(1, 11);
+  const mortData = mortgages.slice(1, 11);
+  const otherData = fixedOther.slice(1, 11);
   const ctx = document.getElementById('stackedExpenseChart');
   new Chart(ctx, {
     type: 'bar',
@@ -854,8 +855,8 @@ function buildTaxChart() {
 
 // Loan repayment chart
 function buildLoanChart() {
-  const lMonths = ['Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26'];
-  const loanVals = [4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58];
+  const lMonths = ['Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26'];
+  const loanVals = [4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45];
   const ctx = document.getElementById('loanChart');
   new Chart(ctx, {
     type: 'line',
