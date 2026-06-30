@@ -228,7 +228,7 @@
   <div class="charts-grid">
     <div class="chart-card">
       <div class="chart-title">Monthly Cashflow — Income vs Expenses</div>
-      <div class="chart-sub">Jun 2025 – May 2026 &nbsp;·&nbsp; Shaded bars = projected</div>
+      <div class="chart-sub">Jun 2025 – Jun 2026 &nbsp;·&nbsp; Shaded bars = projected</div>
       <div class="legend">
         <div class="legend-item"><div class="legend-dot" style="background:#e8b84b"></div>Rent Income</div>
         <div class="legend-item"><div class="legend-dot" style="background:#f87171"></div>Total Expenses</div>
@@ -294,7 +294,7 @@
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px">
       <div>
         <div class="chart-title">Monthly Cashflow Tracker</div>
-        <div class="chart-sub">Jul 2025 – May 2026 &nbsp;·&nbsp; IP year 1</div>
+        <div class="chart-sub">Jul 2025 – Jun 2026 &nbsp;·&nbsp; IP year 1</div>
       </div>
     </div>
     <table>
@@ -509,24 +509,25 @@
 // =====================================================================
 // DATA
 // =====================================================================
-const months = ['Jun-25','Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26'];
-const monthLabels = ['Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26'];
+const months = ['Jun-25','Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26'];
+const monthLabels = ['Jun 25','Jul 25','Aug 25','Sep 25','Oct 25','Nov 25','Dec 25','Jan 26','Feb 26','Mar 26','Apr 26','May 26','Jun 26'];
 
-const income = [0, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 3419.39, 2680];
+const income = [0, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 2680, 3419.39, 2680, 2680];
 
 // Mortgage repayments by month (from IE sheet; Jun=pre-settlement inspection only; Mar+ estimated)
-const mortgages = [0, 4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45, 4281.84];
+const mortgages = [0, 4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45, 4281.84, 4472.92];
 
 // Fixed other expenses (PM + body corp + insurance + admin + council)
 // Mar-26 (index 9): body corp charged quarterly $802.20 (Q2 Mar-May 2026, per PM Statement #9) instead of monthly $310.46
 // Apr-26 (index 10): light month — PM Statement #10 shows only PM Fee $276.35 + Admin $8.80 (no council/body corp/pest); income +$3,419.39 incl. 5-week rent run + $69.39 water reimbursement
 // May-26 (index 11): PM Statement #11 — PM Fee $221.08 + Admin $8.80 + pest spray $123.00 + council rates/water $1,068.29
-const fixedOther = [550, 975.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 1429.90, 337.75, 1421.17];
+const fixedOther = [550, 975.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 938.16, 1429.90, 337.75, 1421.17, 2016.24];
 // Jul includes let fee $737 folded into IE total; Nov includes NBN $300
+// Jun-26 (index 12): PM Statement #12 — BC Q3 $1,318.87 (01/06-31/08/26) + Mgmt $303.57 + Lease Renewal $385.00 + Admin $8.80
 
 // Actual total expenses from cashflow sheet
-const expensesActual = [550, 6157.06, 5110.41, 4994.35, 4882.96, 4996.83, 4921.95, 5006.79, 5070.79, 5350.48, 4660.20, 5703.01];
-const isProjected = [false,false,false,false,false,false,false,false,false,false,false,false];
+const expensesActual = [550, 6157.06, 5110.41, 4994.35, 4882.96, 4996.83, 4921.95, 5006.79, 5070.79, 5350.48, 4660.20, 5703.01, 6489.16];
+const isProjected = [false,false,false,false,false,false,false,false,false,false,false,false,false];
 
 // Build expenses array (actual where available, estimated otherwise)
 const expenses = expensesActual.map((v, i) => v !== null ? v : (mortgages[i] + fixedOther[i]));
@@ -537,8 +538,8 @@ let cumulative = [];
 let running = 0;
 netCashflow.forEach(v => { running += v; cumulative.push(Math.round(running)); });
 
-// Totals (actual only = months 0-11, i.e. Jun 25 – May 26)
-const actualMonths = 12;
+// Totals (actual only = months 0-12, i.e. Jun 25 – Jun 26)
+const actualMonths = 13;
 const totalIncomeActual = income.slice(0, actualMonths).reduce((a,b) => a+b, 0);
 const totalExpensesActual = expenses.slice(0, actualMonths).reduce((a,b) => a+b, 0);
 const totalNetActual = totalIncomeActual - totalExpensesActual;
@@ -607,8 +608,8 @@ function buildCashflowTable() {
 // LOAN TABLE
 // =====================================================================
 function buildLoanTable() {
-  const loanMonths = ['Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26'];
-  const loanVals = [4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45, 4281.84];
+  const loanMonths = ['Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26'];
+  const loanVals = [4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45, 4281.84, 4472.92];
   const tbody = document.getElementById('loan-table-body');
   loanVals.forEach((v, i) => {
     const prev = i>0 ? loanVals[i-1] : null;
@@ -769,9 +770,9 @@ function buildCumulativeChart() {
 
 // Stacked expense chart
 function buildStackedExpenseChart() {
-  const lMonths = monthLabels.slice(1, 11);
-  const mortData = mortgages.slice(1, 11);
-  const otherData = fixedOther.slice(1, 11);
+  const lMonths = monthLabels.slice(1, 13);
+  const mortData = mortgages.slice(1, 13);
+  const otherData = fixedOther.slice(1, 13);
   const ctx = document.getElementById('stackedExpenseChart');
   new Chart(ctx, {
     type: 'bar',
@@ -856,8 +857,8 @@ function buildTaxChart() {
 
 // Loan repayment chart
 function buildLoanChart() {
-  const lMonths = ['Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26'];
-  const loanVals = [4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45];
+  const lMonths = ['Jul-25','Aug-25','Sep-25','Oct-25','Nov-25','Dec-25','Jan-26','Feb-26','Mar-26','Apr-26','May-26','Jun-26'];
+  const loanVals = [4181.90, 4172.25, 4056.19, 3944.80, 4058.67, 3983.79, 4068.63, 4132.63, 3920.58, 4322.45, 4281.84, 4472.92];
   const ctx = document.getElementById('loanChart');
   new Chart(ctx, {
     type: 'line',
